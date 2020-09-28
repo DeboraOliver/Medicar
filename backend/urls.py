@@ -8,7 +8,7 @@ from rest_framework.authtoken import views
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
-router.register(r'especialidade', EspecialidadeViewSet, basename='list')
+router.register(r'especialidade', EspecialidadeViewSet, basename='especialidade')
 router.register(r'medico', MedicoViewSet)
 
 urlpatterns = [

@@ -11,9 +11,9 @@ class Especialidade(models.Model):
 
 class Medico(models.Model):
     nome = models.CharField ("Nome", max_length=200, blank=False, null=False)
-    crm = models.IntegerField ("CRM", max_length=11, null=False)
+    crm = models.CharField ("CRM", max_length=11, null=False)
     email = models.EmailField ()
-    telefone = models.IntegerField ("Telefone")
+    telefone = models.CharField ("Telefone", max_length=11)
     especialidade = models.ForeignKey (Especialidade, on_delete=models.CASCADE)
 
     def __str__(self):
