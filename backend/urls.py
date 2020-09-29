@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from .views import UserViewSet, GroupViewSet
-from core.views import EspecialidadeViewSet, MedicoViewSet
+from core.views import EspecialidadeViewSet, MedicoViewSet, AgendaViewSet
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
@@ -10,6 +10,7 @@ router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'especialidade', EspecialidadeViewSet, basename='especialidade')
 router.register(r'medico', MedicoViewSet)
+router.register(r'agenda', AgendaViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
