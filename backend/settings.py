@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'smart_selects',
     'core',
     'rest_framework.authtoken'
 ]
@@ -121,3 +122,5 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#JQUERY_URL = True #para o smart selections
