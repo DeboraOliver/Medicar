@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework import permissions, authentication
-from .serializers import EspecialidadeSerializer, MedicoSerializer, AgendaSerializer, HorasSerializer, ConsultaSerializer
+from .serializers import EspecialidadeSerializer, MedicoSerializer, AgendaSerializer, ConsultaSerializer
 from .models import Especialidade, Medico, Agenda, Horas,  Consulta
 
 
@@ -21,11 +21,11 @@ class MedicoViewSet(viewsets.ModelViewSet):
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
     # este ultimo campo é para usar o postman
 
-class HorasViewSet(viewsets.ModelViewSet):
-    queryset = Horas.objects.all ()
-    serializer_class = HorasSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+# class HorasViewSet(viewsets.ModelViewSet):
+    # queryset = Horas.objects.all ()
+    # serializer_class = HorasSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
 
 
 class AgendaViewSet(viewsets.ModelViewSet):
@@ -33,7 +33,6 @@ class AgendaViewSet(viewsets.ModelViewSet):
     serializer_class = AgendaSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
-    # este ultimo campo é para usar o postman
 
 class ConsultaViewSet(viewsets.ModelViewSet):
     queryset = Consulta.objects.all()

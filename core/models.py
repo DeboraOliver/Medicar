@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from datetime import date, time, datetime, timedelta
 import datetime as dt
 from smart_selects.db_fields import GroupedForeignKey, ChainedForeignKey, ChainedManyToManyField
+from multiselectfield import MultiSelectField
 
 
 class Especialidade(models.Model):
@@ -39,35 +40,35 @@ class Horas(models.Model):
     def __str__(self):
         return '{}'.format (str(self.hours))
 
-
+def data_passada(value):
+    hoje = date.today()
+    if value < hoje:
+        raise ValidationError("Não é possível agendar horários em datas passadas.")
 
 class Agenda(models.Model):
     medico = models.ForeignKey (Medico, on_delete=models.CASCADE)
-    dia = models.DateField()
-    #horario = models.TimeField()
-    horario = models.ManyToManyField(Horas)
+    dia = models.DateField (validators=[data_passada])
+    horario = MultiSelectField(choices=hours,
+                                 max_choices=5,
+                                 max_length=200)
+    #horario = JSONField(models.ManyToManyField (Horas))
+
+    class Meta:
+        unique_together = ('medico','dia')
+
+    # def save(self, *args, **kwargs):
+    #     result= []
+    #     data= self.dia
+    #     doutor= self.medico
+    #     concatenar="{}-{}".format(data, doutor)
+    #     if concatenar in result:
+    #         raise ValidationError("Já existe agenda para o dia {} com dr(a) {}. Escolha outro dia, ou outro médico.".format(data, doutor))
+    #     else:
+    #         result.append(concatenar)
+    #     super ().save (*args, **kwargs)
 
     def __str__(self):
         return '{} - {}'.format (self.medico, self.dia)
-
-
-    def get_dia(self):
-        hoje = date.today()
-        if hoje.strftime('%Y-%m-%d') > self.dia:
-            raise ValidationError("Não é possível agendar horários em datas passadas.")
-
-    def choquededatas(self, ignore=[]):
-        dias_agendados = type (self).objects.filter(dia=self.dia)
-        for agendado in ignore:
-            try:
-                dias_agendados = dias_agendados.exclude(id=agendado.id)
-            except:
-                pass
-
-        #if dias_agendados.exists():
-         #   raise ValidationError("Já existe agenda para este dia.Escolha outro dia.")
-
-
 
     class Meta:
         ordering = ['dia']
@@ -84,25 +85,33 @@ class Consulta(models.Model):
         auto_choose=True,
         sort=True)
     #usuario = models.ForeignKey (User, on_delete=models.CASCADE)
-    #dia = ChainedForeignKey(
+    dia = ChainedForeignKey(
+        Agenda,
+        chained_field="medico",
+        chained_model_field="medico",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+
+    #horario = ChainedForeignKey (
      #   Agenda,
-      #  chained_field="medico",
-       # chained_model_field="medico",
+        #chained_field="dia",
+        #chained_model_field="horario",
         #show_all=False,
         #auto_choose=True,
         #sort=True)
 
-    horario = ChainedManyToManyField(
-        Agenda,
-		horizontal = True,
-		verbose_name = "horario",
-        chained_field="medico",
-        chained_model_field="medico")
+    # horario = ChainedManyToManyField(
+    #     Agenda,
+		# horizontal = True,
+		# verbose_name = "horario",
+    #     chained_field="dia",
+    #     chained_model_field="dia")
 
     data_agendamento = models.DateTimeField(auto_now=True)
 
 	
     #após salva fazer update da agenda
 
-    #class Meta:
-     #   ordering = ['dia']
+    class Meta:
+       ordering = ['dia']

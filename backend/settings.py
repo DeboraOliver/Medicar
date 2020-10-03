@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'smart_selects',
+    'multiselectfield',
     'core',
     'rest_framework.authtoken'
 ]
@@ -124,3 +125,6 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 #JQUERY_URL = True #para o smart selections
+
+#AUTH_USER_MODEL = "core.MyUser" #para evitar erros com o smart select
+

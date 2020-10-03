@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from .views import UserViewSet, GroupViewSet
-from core.views import EspecialidadeViewSet, MedicoViewSet, AgendaViewSet, HorasViewSet, ConsultaViewSet
+from core.views import EspecialidadeViewSet, MedicoViewSet, AgendaViewSet, ConsultaViewSet
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
@@ -11,7 +11,6 @@ router.register(r'groups', GroupViewSet)
 router.register(r'especialidade', EspecialidadeViewSet, basename='especialidade')
 router.register(r'medico', MedicoViewSet)
 router.register(r'agenda', AgendaViewSet)
-router.register(r'horas', HorasViewSet)
 router.register(r'consulta', ConsultaViewSet)
 
 urlpatterns = [
