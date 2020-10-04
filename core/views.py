@@ -1,7 +1,8 @@
 from rest_framework import viewsets
+from django.utils import timezone
 from rest_framework import permissions, authentication
 from .serializers import EspecialidadeSerializer, MedicoSerializer, AgendaSerializer, ConsultaSerializer
-from .models import Especialidade, Medico, Agenda, Horas,  Consulta
+from .models import Especialidade, Medico, Agenda, Consulta
 
 
 class EspecialidadeViewSet(viewsets.ModelViewSet):
@@ -10,10 +11,6 @@ class EspecialidadeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Especialidade.objects.filter
-
 class MedicoViewSet(viewsets.ModelViewSet):
     queryset = Medico.objects.all()
     serializer_class = MedicoSerializer
@@ -21,21 +18,28 @@ class MedicoViewSet(viewsets.ModelViewSet):
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
     # este ultimo campo é para usar o postman
 
-# class HorasViewSet(viewsets.ModelViewSet):
-    # queryset = Horas.objects.all ()
-    # serializer_class = HorasSerializer
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
-
-
 class AgendaViewSet(viewsets.ModelViewSet):
-    queryset = Agenda.objects.all()
+    now = timezone.now()
+    queryset = Agenda.objects.filter(dia__gte=now).order_by('dia')
     serializer_class = AgendaSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+
+# class AgendaViewSet(viewsets.ListView):
+#     def get_queryset(self):
+#         now = timezone.now()
+#         futuro = Agenda.objects.fiter(dia__gte=now)
+#         serializer_class = AgendaSerializer
+#         permission_classes = [permissions.IsAuthenticated]
+#         authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+#         return list(futuro)
 
 class ConsultaViewSet(viewsets.ModelViewSet):
     queryset = Consulta.objects.all()
     serializer_class = ConsultaSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+
+    # def get_queryset(self):
+    #     owner = self.request.user
+    #     return Consulta.objects.filter

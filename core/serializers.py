@@ -15,16 +15,18 @@ class EspecialidadeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Especialidade
         fields = ['id', 'especialidade']
+        depth = 2
 
 class AgendaSerializer(serializers.ModelSerializer):
-    #horario = serializers.PrimaryKeyRelatedField(queryset=Horas.objects.all(),many = True)
+    horario_str = serializers.ReadOnlyField (source='horario')
+
     class Meta:
         model = Agenda
-        fields = ['id', 'medico', 'horario']
+        fields = ['id', 'medico', 'horario_str']
         depth = 2
 
 class ConsultaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consulta
-        fields = ['id', 'especialidade','medico','dia', 'data_agendamento']
-        depth = 1
+        fields = ['id','dia', 'horario', 'data_agendamento', 'medico','especialidade',]
+        depth = 1 # só funciona para foreignfields

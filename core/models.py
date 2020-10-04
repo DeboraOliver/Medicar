@@ -8,7 +8,6 @@ from multiselectfield import MultiSelectField
 
 
 class Especialidade(models.Model):
-    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     especialidade = models.CharField(max_length=50, default='Demartologia')
 
     def __str__(self):
@@ -18,8 +17,8 @@ class Especialidade(models.Model):
         ordering = ['especialidade']
 
 class Medico(models.Model):
-    nome = models.CharField ("Nome", max_length=200, blank=False, null=False)
-    crm = models.CharField ("CRM", max_length=11, null=False)
+    nome = models.CharField ("Nome", max_length=200, null = False, blank = False)
+    crm = models.CharField ("CRM", max_length=11,  null = False, blank = False)
     email = models.EmailField ()
     telefone = models.CharField ("Telefone", max_length=11)
     especialidade = models.ForeignKey(Especialidade, on_delete=models.CASCADE)
@@ -30,16 +29,10 @@ class Medico(models.Model):
     class Meta:
         ordering = ['nome']
 
-    
+   
+hours = [(i, dt.time(i).strftime('%H:%M')) for i in range(7,21)]
 
-hours = [(i, dt.time(i).strftime('%H:%M')) for i in range(24)]
-
-class Horas(models.Model):
-    hours = models.IntegerField(choices=hours)
-
-    def __str__(self):
-        return '{}'.format (str(self.hours))
-
+#validator
 def data_passada(value):
     hoje = date.today()
     if value < hoje:
@@ -47,25 +40,17 @@ def data_passada(value):
 
 class Agenda(models.Model):
     medico = models.ForeignKey (Medico, on_delete=models.CASCADE)
-    dia = models.DateField (validators=[data_passada])
+    dia = models.DateField (validators=[data_passada],  null = False, blank = False)
     horario = MultiSelectField(choices=hours,
                                  max_choices=5,
                                  max_length=200)
-    #horario = JSONField(models.ManyToManyField (Horas))
 
-    class Meta:
-        unique_together = ('medico','dia')
+    def clean(self):
+        if self.dia and Agenda.objects.filter (medico=self.medico).exists ():
+            raise ValidationError ("Já existe agenda para o dia {} com dr(a) {}. Escolha outro dia, ou outro médico.".format(self.dia, self.medico))
 
-    # def save(self, *args, **kwargs):
-    #     result= []
-    #     data= self.dia
-    #     doutor= self.medico
-    #     concatenar="{}-{}".format(data, doutor)
-    #     if concatenar in result:
-    #         raise ValidationError("Já existe agenda para o dia {} com dr(a) {}. Escolha outro dia, ou outro médico.".format(data, doutor))
-    #     else:
-    #         result.append(concatenar)
-    #     super ().save (*args, **kwargs)
+    #class Meta:
+     #   unique_together = ('medico','dia') Só funciona se não houver foreigkey
 
     def __str__(self):
         return '{} - {}'.format (self.medico, self.dia)
@@ -73,10 +58,11 @@ class Agenda(models.Model):
     class Meta:
         ordering = ['dia']
 
-
 class Consulta(models.Model):
 
+    usuario = models.ForeignKey (User, on_delete=models.CASCADE)
     especialidade = models.ForeignKey(Especialidade, on_delete=models.CASCADE)
+    
     medico = ChainedForeignKey(
         Medico,
         chained_field="especialidade",
@@ -84,7 +70,7 @@ class Consulta(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    #usuario = models.ForeignKey (User, on_delete=models.CASCADE)
+
     dia = ChainedForeignKey(
         Agenda,
         chained_field="medico",
@@ -93,25 +79,21 @@ class Consulta(models.Model):
         auto_choose=True,
         sort=True)
 
-    #horario = ChainedForeignKey (
-     #   Agenda,
-        #chained_field="dia",
-        #chained_model_field="horario",
-        #show_all=False,
-        #auto_choose=True,
-        #sort=True)
-
-    # horario = ChainedManyToManyField(
-    #     Agenda,
-		# horizontal = True,
-		# verbose_name = "horario",
-    #     chained_field="dia",
-    #     chained_model_field="dia")
+    horario = models.TimeField()
 
     data_agendamento = models.DateTimeField(auto_now=True)
 
-	
-    #após salva fazer update da agenda
+    def __str__(self):
+        return '{}: {} - {}'.format (self.medico, self.dia, self.horario)
 
+    #Ordenar consulta por dia e horário
     class Meta:
-       ordering = ['dia']
+        ordering = ['dia','horario']
+
+        #checar se já existe esta consulta
+    def hora_marcada(self):
+        if self.dia and Consulta.objects.filter (horario=self.horario).exists():
+            raise ValidationError ("Você já possui uma consulta marcada para {} - {}.".format(self.dia, self.horario))
+			
+	
+	

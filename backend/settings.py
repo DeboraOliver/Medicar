@@ -126,5 +126,5 @@ STATIC_URL = '/static/'
 
 #JQUERY_URL = True #para o smart selections
 
-#AUTH_USER_MODEL = "core.MyUser" #para evitar erros com o smart select
+#AUTH_USER_MODEL = "core.Consulta" #para evitar erros com o smart select
 
