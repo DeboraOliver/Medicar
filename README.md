@@ -28,13 +28,13 @@ Instale a versão 3.x do Python e o Virtualenv:
 <li> Instale as dependências : pip install -r requirements.txt;
 <li> Crie a base de dados : python manage.py migrate
 <li> Suba o servidor : python manage.py runserver
-<li> Acesse o programa em 127.0.0.1:8000
+<li> Acesse o programa em http://127.0.0.1:8000/
 </ol>
 
 Os endpoints gerados:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="endpoints" src="pics/endpoints.png" width="300px" />
+  <img alt="teste" title="endpoints" src="pics/endpoints.PNG" width="400px" />
 </h2>
 
 ## Cadastrar especialidades
@@ -54,7 +54,7 @@ class Especialidade(models.Model):
 O resultado na tela administrativa:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="especialidadecadastro" src="pics/cadastrar_especialidade.png" width="300px" />
+  <img alt="Fastfeet" title="especialidadecadastro" src="pics/cadastrar_especialidade.PNG" width="600px" />
 </h2>
 
 ### Listar especialidades médicas
@@ -62,7 +62,7 @@ O resultado na tela administrativa:
 Ao acessar a http://127.0.0.1:8000/especialidade/ é possível visualizar ambas as especialidades cadastradas:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="especialidadelista" src="pics/lista_especialidades.png" width="300px" />
+  <img alt="" title="especialidadelista" src="pics/lista_especialidades.PNG" width="400px" />
 </h2>
 
 ## Cadastrar médicos
@@ -87,7 +87,7 @@ class Medico(models.Model):
 Resulta na seguinte tela:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="medicoslista" src="pics/cadastrar_medicos.png" width="300px" />
+  <img alt="" title="medicoslista" src="pics/cadastrar_medicos.PNG" width="500px" />
 </h2>
 
 
@@ -96,7 +96,7 @@ Resulta na seguinte tela:
 Na localhost http://127.0.0.1:8000/medico/:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="medicoscadastro" src="pics/lista_medicos.png" width="300px" />
+  <img alt="" title="medicoscadastro" src="pics/lista_medicos.PNG" width="400px" />
 </h2>
 
 
@@ -134,7 +134,7 @@ class Agenda(models.Model):
 Na tela administrativa, o código acima aparece como:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="cadastroagendas" src="pics/cadastro_agendas.png" width="300px" />
+  <img alt="" title="cadastroagendas" src="pics/cadastro_agendas.PNG" width="400px" />
 </h2>
 
 ### Listar agendas disponíveis
@@ -142,7 +142,7 @@ Na tela administrativa, o código acima aparece como:
 A lista de agendas pode ser visto na localhost como:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="listaagendas" src="pics/lista_agendas.png" width="300px" />
+  <img alt="" title="listaagendas" src="pics/lista_agendas.PNG" width="400px" />
 </h2>
 
 ### Listar consultas marcadas
@@ -192,13 +192,13 @@ class Consulta(models.Model):
 Este código aparece na localhost como:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="listaconsultas" src="pics/cadastrar_consultas.png" width="300px" />
+  <img alt="" title="listaconsultas" src="pics/cadastrar_consultas.PNG" width="500px" />
 </h2>
 
 A lista de consultas (parte):
 
 <h2 align="center">
-  <img alt="Fastfeet" title="listaconsultas" src="pics/lista_consultas.png" width="300px" />
+  <img alt="" title="listaconsultas" src="pics/lista_consultas.PNG" width="500px" />
 </h2>
 
 Como se pode verificar algumas regras de negócios não entraram e alguns ajustes talvez precisassem ser feitos.
@@ -208,7 +208,7 @@ Como se pode verificar algumas regras de negócios não entraram e alguns ajuste
 Também é possível desmarcar consulta se for necessário:
 
 <h2 align="center">
-  <img alt="Fastfeet" title="desmarcar" src="pics/desmarcar.png" width="300px" />
+  <img alt="" title="desmarcar" src="pics/desmarcar.PNG" width="600px" />
 </h2>
 
 ## O que pode melhorar
